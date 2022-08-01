@@ -25,11 +25,11 @@ RUN \
     tar -xf /tmp/prowlarr.tar.gz -C /userfs/ && \
 
     # Disable Prowlarr-Update
-    rm -r /userfs/Prowlarr/Prowlarr.Update/
+    rm -r /userfs/Prowlarr/Prowlarr.Update/ && \
 
     # Tag Prowlarr Version
-    mkdir -p userfs/etc
-    echo "$APP_VERSION" > userfs/etc/docker-image
+    mkdir -p userfs/etc && \
+    echo "$APP_VERSION" > userfs/etc/docker-image && \
     echo "UpdateMethod=docker\nBranch=$BRANCH\nPackageVersion=$APP_VERSION\nPackageAuthor=stlouisn" > userfs/Prowlarr/package_info
 
 FROM stlouisn/ubuntu:latest
