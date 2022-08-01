@@ -1,0 +1,90 @@
+version: 2.1
+
+jobs:
+
+  build:
+    resource_class: small
+    docker:
+      - image: cimg/base:stable
+        auth:
+          username: stlouisn
+          password: $DOCKER_PASSWORD
+    steps:
+      - checkout:
+          name: Checkout code
+      - setup_remote_docker:
+          name: Spin up remote Docker Engine
+          version: 20.10.11
+      - run:
+          name: Setting environment variables
+          command: |
+            cat environment >> $BASH_ENV
+            bash scripts/get_date.sh
+            bash scripts/get_version.sh
+            source $BASH_ENV
+            env | grep '^BUILD_' | sort
+            env | grep '^C_' | sort
+            echo
+      - run:
+          name: Preparing dockerfile
+          command: |
+            bash scripts/set_labels.sh
+            sed -i -e '/^$/d' -e 's/^[ \t]*//' -e '/^#/d' dockerfile
+            cat dockerfile
+            echo
+      - run:
+          name: Configure Docker Hub
+          command: |
+            [ -z "$DOCKER_PASSWORD" ] && exit 1
+            echo "$DOCKER_PASSWORD" | docker login --username=stlouisn --password-stdin
+            echo
+      - run:
+          name: Configure Docker Buildx
+          command: |
+            docker buildx version
+            echo
+            sudo apt-get update -qq && sudo apt-get install -y binfmt-support qemu-user-static
+            echo
+            docker pull multiarch/qemu-user-static
+            echo
+            docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+            echo
+            docker context create buildcontext
+            echo
+            docker buildx create buildcontext --use --platform $BUILD_PLATFORMS > /dev/null
+      - run:
+          name: Build and push container
+          no_output_timeout: 20m
+          command: |
+            docker buildx inspect --bootstrap
+            echo
+            docker buildx build \
+              --tag stlouisn/$C_NAME:$C_TAG \
+              --platform $BUILD_PLATFORMS \
+              --build-arg APP_VERSION=$C_VERSION \
+              --progress plain \
+              --push .
+            echo
+
+  # test:
+  #   resource_class: small
+  #   docker:
+  #     - image: cimg/base:stable
+  #       auth:
+  #         username: stlouisn
+  #         password: $DOCKER_PASSWORD
+  #   steps:
+  #     - run:
+  #         name: Setting environment variables
+  #         command: docker run
+
+workflows:
+  version: 2
+  build-container:
+    jobs:
+      - build:
+          name: build-container
+      # - test:
+      #     name: test-container
+      #     requires:
+      #       - build
