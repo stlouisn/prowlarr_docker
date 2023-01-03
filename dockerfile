@@ -3,7 +3,7 @@ FROM stlouisn/ubuntu:latest AS dl
 ARG TARGETARCH
 
 ARG APP_VERSION
-ARG BRANCH=develop
+ARG BRANCH=master
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -17,7 +17,7 @@ RUN \
         curl && \
 
     # Download Prowlarr
-    if [ "arm" = "$TARGETARCH" ] ; then curl -o /tmp/prowlarr.tar.gz -sSL "https://github.com/Prowlarr/Prowlarr/releases/download/v$APP_VERSION/Prowlarr.$BRANCH.$APP_VERSION.linux-core-arm.tar.gz" ; fi && \
+    if [ "arm" = "$TARGETARCH" ]   ; then curl -o /tmp/prowlarr.tar.gz -sSL "https://github.com/Prowlarr/Prowlarr/releases/download/v$APP_VERSION/Prowlarr.$BRANCH.$APP_VERSION.linux-core-arm.tar.gz"   ; fi && \
     if [ "arm64" = "$TARGETARCH" ] ; then curl -o /tmp/prowlarr.tar.gz -sSL "https://github.com/Prowlarr/Prowlarr/releases/download/v$APP_VERSION/Prowlarr.$BRANCH.$APP_VERSION.linux-core-arm64.tar.gz" ; fi && \
 
     # Extract Prowlarr
