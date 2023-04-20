@@ -19,6 +19,7 @@ RUN \
     # Download Prowlarr
     if [ "arm" = "$TARGETARCH" ]   ; then curl -o /tmp/prowlarr.tar.gz -sSL "https://github.com/Prowlarr/Prowlarr/releases/download/v$APP_VERSION/Prowlarr.$BRANCH.$APP_VERSION.linux-core-arm.tar.gz"   ; fi && \
     if [ "arm64" = "$TARGETARCH" ] ; then curl -o /tmp/prowlarr.tar.gz -sSL "https://github.com/Prowlarr/Prowlarr/releases/download/v$APP_VERSION/Prowlarr.$BRANCH.$APP_VERSION.linux-core-arm64.tar.gz" ; fi && \
+    if [ "amd64" = "$TARGETARCH" ] ; then curl -o /tmp/prowlarr.tar.gz -sSL "https://github.com/Prowlarr/Prowlarr/releases/download/v$APP_VERSION/Prowlarr.$BRANCH.$APP_VERSION.linux-core-x64.tar.gz" ; fi && \
 
     # Extract Prowlarr
     mkdir -p /userfs && \
