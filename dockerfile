@@ -12,7 +12,7 @@ RUN \
     # Update apt-cache
     apt-get update && \
 
-    # Install jq
+    # Install curl
     apt-get install -y --no-install-recommends \
         curl && \
 
