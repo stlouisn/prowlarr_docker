@@ -66,7 +66,7 @@ RUN \
 
     # Install unicode support
     apt-get install -y --no-install-recommends \
-        libicu75 && \
+        libicu72 && \
 
     # Clean apt-cache
     apt-get autoremove -y --purge && \
