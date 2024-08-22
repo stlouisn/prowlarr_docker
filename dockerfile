@@ -16,10 +16,17 @@ RUN \
     apt-get install -y --no-install-recommends \
         curl && \
 
+    # Install wget2
+    apt-get install -y --no-install-recommends \
+        wget2 && \
+
     # Download Prowlarr
-    if [ "arm" = "$TARGETARCH" ]   ; then curl -o /tmp/prowlarr.tar.gz -sSL "https://github.com/Prowlarr/Prowlarr/releases/download/v$APP_VERSION/Prowlarr.$BRANCH.$APP_VERSION.linux-core-arm.tar.gz"   --keepalive-time 600 --limit-rate 500K; fi && \
-    if [ "arm64" = "$TARGETARCH" ] ; then curl -o /tmp/prowlarr.tar.gz -sSL "https://github.com/Prowlarr/Prowlarr/releases/download/v$APP_VERSION/Prowlarr.$BRANCH.$APP_VERSION.linux-core-arm64.tar.gz" --keepalive-time 600 --limit-rate 500K; fi && \
-    if [ "amd64" = "$TARGETARCH" ] ; then curl -o /tmp/prowlarr.tar.gz -sSL "https://github.com/Prowlarr/Prowlarr/releases/download/v$APP_VERSION/Prowlarr.$BRANCH.$APP_VERSION.linux-core-x64.tar.gz"   --keepalive-time 600 --limit-rate 500K; fi && \
+    #if [ "arm" = "$TARGETARCH" ]   ; then curl -o /tmp/prowlarr.tar.gz -sSL "https://github.com/Prowlarr/Prowlarr/releases/download/v$APP_VERSION/Prowlarr.$BRANCH.$APP_VERSION.linux-core-arm.tar.gz"   --keepalive-time 600 --limit-rate 500K; fi && \
+    #if [ "arm64" = "$TARGETARCH" ] ; then curl -o /tmp/prowlarr.tar.gz -sSL "https://github.com/Prowlarr/Prowlarr/releases/download/v$APP_VERSION/Prowlarr.$BRANCH.$APP_VERSION.linux-core-arm64.tar.gz" --keepalive-time 600 --limit-rate 500K; fi && \
+    #if [ "amd64" = "$TARGETARCH" ] ; then curl -o /tmp/prowlarr.tar.gz -sSL "https://github.com/Prowlarr/Prowlarr/releases/download/v$APP_VERSION/Prowlarr.$BRANCH.$APP_VERSION.linux-core-x64.tar.gz"   --keepalive-time 600 --limit-rate 500K; fi && \
+    if [ "arm" = "$TARGETARCH" ]   ; then wget2 -O /tmp/prowlarr.tar.gz -q "https://github.com/Prowlarr/Prowlarr/releases/download/v$APP_VERSION/Prowlarr.$BRANCH.$APP_VERSION.linux-core-arm.tar.gz";   fi && \
+    if [ "arm64" = "$TARGETARCH" ] ; then wget2 -O /tmp/prowlarr.tar.gz -q "https://github.com/Prowlarr/Prowlarr/releases/download/v$APP_VERSION/Prowlarr.$BRANCH.$APP_VERSION.linux-core-arm64.tar.gz"; fi && \
+    if [ "amd64" = "$TARGETARCH" ] ; then wget2 -O /tmp/prowlarr.tar.gz -q "https://github.com/Prowlarr/Prowlarr/releases/download/v$APP_VERSION/Prowlarr.$BRANCH.$APP_VERSION.linux-core-x64.tar.gz";   fi && \
 
     # Extract Prowlarr
     mkdir -p /userfs && \
